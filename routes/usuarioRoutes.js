@@ -25,3 +25,13 @@ router.get('/obtener/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+// Route to obtain all users
+router.get('/obtener', async (req, res) => {
+  try {
+    const usuarios = await Usuario.find();
+    res.status(200).send(usuarios);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
