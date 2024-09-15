@@ -1,7 +1,6 @@
 import express from "express";
 import { User } from "../models/models.js";
 
-
 const router = express.Router();
 
 // GET ALL USERS
@@ -28,15 +27,15 @@ router.post("/", async (req, res) => {
     return res.status(200).json(existingUser);
   }
 
-  let name = email
-  if (firstName && lastName){
-    name = firstName + " " + lastName
+  let name = email;
+  if (firstName || lastName) {
+    name = firstName + " " + lastName;
   }
 
   const user = new User({
     clerkUserId: req.body.id,
     name,
-    balance: Math.floor(Math.random() * 1000) + 1
+    balance: Math.floor(Math.random() * 1000) + 1,
   });
 
   try {
@@ -53,7 +52,7 @@ router.post("/", async (req, res) => {
 router.get("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const user = await User.findOne({clerkUserId: userId});
+    const user = await User.findOne({ clerkUserId: userId });
     return res.status(200).json(user);
   } catch (err) {
     console.log("Error getting user by ID:", err);
