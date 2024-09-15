@@ -19,7 +19,7 @@ router.put("/:eventId/payment/user/:userId", async (req, res) => {
     }
     event.members.forEach(member => {
       if (member.user.toString() === user._id.toString()) {
-        member.paid = amount;
+        member.paid = Number(member.paid) + Number(amount);
       }
     });
     await event.save();
