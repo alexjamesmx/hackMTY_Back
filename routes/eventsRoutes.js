@@ -2,11 +2,42 @@ import express from "express";
 import { Event, User } from "../models/models.js";
 const router = express.Router();
 
+router.put("/:eventId/payment/user/:userId", async (req, res) => {
+  try {
+    const { eventId, userId } = req.params;
+    const { products, amount } = req.body;
+    const user = await User.findOne({ clerkUserId: userId});
+    const event = await Event.findById(eventId);
+    if (!event.equitative) {
+      event.products.forEach(product => {
+        const id = new mongoose.Types.ObjectId(product._id);
+        for (let i = 0; i < products.length; i++){
+          if (id == products[i]._id){
+            event.products[i].paid = true;
+            event.products[i].paidBy = user._id;;
+          }
+        }
+      });
+    }
+    event.members.forEach(member => {
+      if (member.user.toString() === user._id.toString()) {
+        member.paid = amount;
+      }
+    });
+    await event.save();
+    res.status(201).send(event);
+
+  } catch (error){
+    console.error("Error updating: ", error);
+    res.status(400).send(error);
+  }
+})
+
+
 router.post("/", async (req, res) => {
   try {
     // Find the admin user by clerkUserId
-    const { userId } = req.params;
-    const user = await User.findOne({ clerkUserId: userId});
+    const user = await User.findOne({ clerkUserId: req.body.admin });
     
     if (!user) {
       return res.status(404).send({ error: "Admin user not found" });
