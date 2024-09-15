@@ -1,5 +1,6 @@
 import express from "express";
 import { User } from "../models/models.js";
+import { use } from "moongose/routes/users.js";
 
 const router = express.Router();
 
@@ -34,7 +35,8 @@ router.post("/", async (req, res) => {
 
   const user = new User({
     clerkUserId: req.body.id,
-    name
+    name,
+    balance: Math.floor(Math.random() * 1000) + 1
   });
 
   try {
@@ -50,7 +52,8 @@ router.post("/", async (req, res) => {
 // GET USER BY ID
 router.get("/:userId", async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const { userId } = req.params;
+    const user = await User.findOne({clerkUserId: userId});
     return res.status(200).json(user);
   } catch (err) {
     console.log("Error getting user by ID:", err);

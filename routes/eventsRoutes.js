@@ -5,11 +5,22 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     // Find the admin user by clerkUserId
-    const user = await User.findOne({ clerkUserId: req.body.admin });
-
+    const { userId } = req.params;
+    const user = await User.findOne({ clerkUserId: userId});
+    
     if (!user) {
       return res.status(404).send({ error: "Admin user not found" });
     }
+
+    const membersPromises = req.body.members.map(async (clerkUserId) => {
+      const user = await User.findOne({ clerkUserId });
+      if (!user) {
+        throw new Error(`User not found for clerkUserId: ${clerkUserId}`);
+      }
+      return { user: user._id, paid: 0 };
+    });
+
+    const members = await Promise.all(membersPromises);
 
     // Initialize the event object
     const event = new Event({
@@ -20,7 +31,7 @@ router.post("/", async (req, res) => {
       products: req.body.products || [],
       admin: user._id,
       total: 0,
-      members: req.body.members || [],
+      members: members || [],
     });
 
     let total = 0;
@@ -42,8 +53,6 @@ router.post("/", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    console.log("userId", userId);
-
     // Find the user by clerkUserId
     const user = await User.findOne({ clerkUserId: userId });
     console.log("user", user);
