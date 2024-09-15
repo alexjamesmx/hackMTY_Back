@@ -63,7 +63,7 @@ app.delete("/", async (req, res) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
-app.use("api/transactions", transactionRouter);
+app.use("/api/transactions", transactionRouter);
 // app.use("/api/products", productRouter);
 // app.use("/api/companies", companyRouter);
 

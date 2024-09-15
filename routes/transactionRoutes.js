@@ -1,5 +1,5 @@
 import express from "express";
-import { User } from "../models/models";
+import { User } from "../models/models.js";
 const router = express.Router();
 
 router.post("/loan/", async (req, res) => {
