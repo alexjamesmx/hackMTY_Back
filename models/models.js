@@ -40,7 +40,8 @@ const eventSchema = new Schema({
   members: [{
     user: {type: Schema.Types.ObjectId, ref: "User"},
     paid: { type: Number, default: 0 }
-  }]
+  }],
+  total: {type: Number, default: 0}
 });
 
 // Crear modelos

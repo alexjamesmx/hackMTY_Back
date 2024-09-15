@@ -4,7 +4,13 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
+    let total = 0;
     const event = new Event(req.body);
+    for (let j = 0; j < event.products.length; j++){
+      let product = event.products[j];
+      total += product.price * product.units;
+    }
+    event.total = total;
     await event.save();
     res.status(201).send(event);
   } catch (error) {
