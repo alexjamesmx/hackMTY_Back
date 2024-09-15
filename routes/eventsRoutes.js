@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import { Event, User } from "../models/models.js";
 const router = express.Router();
 
@@ -100,11 +99,12 @@ router.get("/user/:userId", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:eventId", async (req, res) => {
   try {
     const { eventId } = req.params;
-    const events = await Event.findById(eventId);
-    res.status(200).send(events);
+    console.log(eventId);
+    const event = await Event.findById(eventId).populate("admin").populate("members.user");
+    res.status(200).send(event);
   } catch (error) {
     res.status(500).send(error);
   }
