@@ -2,7 +2,7 @@ import express from "express";
 import { Event } from "../models/models.js";
 const router = express.Router();
 
-router.post("/createEvent", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const event = new Event(req.body);
     await event.save();
@@ -12,9 +12,26 @@ router.post("/createEvent", async (req, res) => {
   }
 });
 
-router.get("/getEvents", async (req, res) => {
+router.get("user/:userId", async (req, res) => {
   try {
-    const events = await Event.find();
+    const { userId } = req.params;
+    const events = await Event.find({
+      $or: [
+        { members: userId },
+        { admin: userId },
+        { "requirements.paidBy": userId }
+      ]
+    }).populate('members admin');
+    res.status(200).send(events);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const events = await Event.findById(eventId);
     res.status(200).send(events);
   } catch (error) {
     res.status(500).send(error);

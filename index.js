@@ -4,8 +4,12 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRouter from "./routes/userRoutes.js";
 import eventRouter from "./routes/eventsRoutes.js";
+import productRouter from "./routes/productRoutes.js";
+import companyRouter from "./routes/companyRoutes.js";
+
 // import transactionRoutes from "./routes/transactionRoutes.js";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
+import { generateDummyData } from "./dump.js";
 
 dotenv.config();
 const app = express();
@@ -26,8 +30,15 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
+  .then(async () => {
     console.log("Connected to MongoDB");
+    
+    try {
+      const { companies, products } = await generateDummyData(10, 50);
+      console.log(`Dummy data generated: ${companies.length} companies and ${products.length} products`);
+    } catch (error) {
+      console.error("Error generating dummy data:", error);
+    }
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB", err);
@@ -38,8 +49,23 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+app.delete("/", async (req, res) => {
+  try {
+    const collections = await mongoose.connection.db.listCollections().toArray();
+    for (const collection of collections) {
+      await mongoose.connection.db.collection(collection.name).deleteMany({});
+    }
+    res.status(200).json({ message: "All documents deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting documents:", error);
+    res.status(500).json({ error: "Failed to delete documents" });
+  }
+});
+
 app.use("/api/users", userRouter);
-app.use("/api/event", eventRouter);
+app.use("/api/events", eventRouter);
+app.use("/api/products", productRouter);
+app.use("/api/companies", companyRouter);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
