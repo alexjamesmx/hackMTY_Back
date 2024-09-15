@@ -11,6 +11,7 @@ const userSchema = new Schema({
   balance: { type: Number, required: true, default: 0 },
 });
 
+/*
 const companySchema = new Schema({
   name: {type: String},
   category: {type: String, required: true},
@@ -21,14 +22,16 @@ const productSchema = new Schema({
   price: {type: Number, required: true },
   company: {type: Schema.Types.ObjectId, ref: "Company" }
 });
+*/
 
 const eventSchema = new Schema({
   name: { type: String, required: true },
   start_date: { type: Date, required: true },
   end_date: { type: Date, required: true },
-  requirements: [{
-    product: {type: Schema.Types.ObjectId, ref: "Product" },
+  products: [{
+    name: {type: String, required: true },
     units: { type: Number, default: 1},
+    price: {type: Number, required: true},
     paid: { type: Boolean, default: false },
     paidBy: { type: Schema.Types.ObjectId, ref: "User" }
   }],
@@ -42,6 +45,6 @@ const eventSchema = new Schema({
 
 // Crear modelos
 export const User = mongoose.model("User", userSchema);
-export const Company = mongoose.model("Company", companySchema);
-export const Product = mongoose.model("Product", productSchema);
+//export const Company = mongoose.model("Company", companySchema);
+// export const Product = mongoose.model("Product", productSchema);
 export const Event = mongoose.model("Event", eventSchema);

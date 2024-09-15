@@ -1,3 +1,4 @@
+/*
 import express from "express";
 import { Product } from "../models/models.js";
 
@@ -25,3 +26,4 @@ router.get("/company/:companyId", async (req, res) => {
   });
 
 export default router;
+*/

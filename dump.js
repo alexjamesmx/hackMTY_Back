@@ -1,3 +1,4 @@
+/*
 import { faker } from '@faker-js/faker';
 import { Company, Product } from "./models/models.js";
 
@@ -32,3 +33,5 @@ export const generateDummyData = async (companyCount, productCount) => {
     throw error;
   }
 };
+
+*/

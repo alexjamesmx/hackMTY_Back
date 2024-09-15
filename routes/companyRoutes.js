@@ -1,3 +1,5 @@
+/*
+
 import express from "express";
 import { Company } from "../models/models.js";
 
@@ -14,3 +16,5 @@ router.get("/", async (req, res) => {
 });
 
 export default router;
+
+*/

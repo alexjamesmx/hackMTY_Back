@@ -2,16 +2,12 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("/pagar", async (req, res) => {
+router.post("/products", async (req, res) => {
   res.send("Payment logic not implemented yet");
 });
 
-router.post("/depositar", async (req, res) => {
+router.post("/deposit", async (req, res) => {
   res.send("Deposit logic not implemented yet");
 });
 
-router.post("/retirar", async (req, res) => {
-  res.send("Withdrawal logic not implemented yet");
-});
-
-module.exports = router;
+export default router;

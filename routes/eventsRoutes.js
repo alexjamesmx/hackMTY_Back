@@ -12,16 +12,16 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("user/:userId", async (req, res) => {
+router.get("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const events = await Event.find({
-      $or: [
-        { members: userId },
-        { admin: userId },
-        { "requirements.paidBy": userId }
-      ]
-    }).populate('members admin');
+      "members": {
+        $elemMatch: {
+          "user": userId
+        }
+      }
+    });
     res.status(200).send(events);
   } catch (error) {
     res.status(500).send(error);
@@ -32,6 +32,15 @@ router.get("/:id", async (req, res) => {
   try {
     const { eventId } = req.params;
     const events = await Event.findById(eventId);
+    res.status(200).send(events);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const events = await Event.find();
     res.status(200).send(events);
   } catch (error) {
     res.status(500).send(error);
