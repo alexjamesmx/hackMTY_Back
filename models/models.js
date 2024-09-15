@@ -8,32 +8,40 @@ const usuarioSchema = new Schema({
     required: true,
     unique: true,
   },
-  publicaciones: {
-    type: [{ type: Schema.Types.ObjectId, ref: "Publicacion" }],
-    default: [], // Default value for publicaciones
-  },
-  balance: { type: Number, required: true, default: 0 },
+  publicaciones: [{ type: Schema.Types.ObjectId, ref: "Evento" }],
+  balance: { type: Number, required: true },
 });
 
-// Definir el esquema de Publicacion
-const publicacionSchema = new Schema({
-  id: { type: String, required: true },
-  nombre_evento: { type: String, required: true },
-  fecha_inicio: { type: Date, required: true },
-  fecha_fin: { type: Date, required: true },
-  miembros: [{ type: Schema.Types.ObjectId, ref: "Usuario" }],
+const empresaSchema = new Schema({
+  name: {type: String},
+  categories: [String],
+  products: [productoSchema]
+})
+
+const productoSchema = new Schema({
+  name: {type: String, required: true},
+  price: { type: Number, required: true }
 });
+
+const requirementSchema = new Schema({
+  producto: { type: Schema.Types.ObjectId, ref: "Producto" },
+  unidades: {type: Number, default: 1},
+  pagado: { type: Boolean, default: false },
+  pagadoPor: { type: Schema.Types.ObjectId, ref: "Usuario" }
+})
 
 // Definir el esquema de Evento
 const eventoSchema = new Schema({
-  id: { type: String, required: true },
   nombre: { type: String, required: true },
   fecha_inicio: { type: Date, required: true },
   fecha_fin: { type: Date, required: true },
-  usuarios: [{ type: Schema.Types.ObjectId, ref: "Usuario" }],
+  requerimientos: [requirementSchema],
+  pagoEquitativo: {type: Boolean, required: true}
 });
 
 // Crear modelos
 export const Usuario = mongoose.model("Usuario", usuarioSchema);
-export const Publicacion = mongoose.model("Publicacion", publicacionSchema);
+export const Empresa = mongoose.model("Empresa", empresaSchema);
+export const Producto = mongoose.model("Producto", productoSchema);
+export const Requerimiento = mongoose.model("Requerimiento", productoSchema);
 export const Evento = mongoose.model("Evento", eventoSchema);

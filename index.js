@@ -39,6 +39,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/posts", publicacionRoutes);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
