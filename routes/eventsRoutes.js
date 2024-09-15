@@ -18,6 +18,22 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:eventId/products", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { name, units, price } = req.body;
+    const event = await Event.findById(eventId);
+    event.products.push({ name, units, price });
+    event.total = event.products.reduce((sum, product) => {
+      return sum + (product.units * product.price);
+    }, 0);
+    await event.save();
+    res.status(201).send(event);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 router.get("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;

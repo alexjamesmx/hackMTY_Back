@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 
 // LOGIN, CREATE OR RETURN USER
 router.post("/", async (req, res) => {
-  const { id } = req.body;
+  const { id, firstName, lastName, email } = req.body;
   if (!id) {
     return res.status(400).json({ message: "Missing id" });
   }
@@ -26,9 +26,15 @@ router.post("/", async (req, res) => {
     // User already exists
     return res.status(200).json(existingUser);
   }
+  
+  let name = email
+  if (firstName && lastName){
+    name = firstName + " " + lastName
+  }
 
   const user = new User({
     clerkUserId: req.body.id,
+    name
   });
 
   try {
