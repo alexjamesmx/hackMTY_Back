@@ -42,19 +42,21 @@ router.post("/", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log("userId", userId);
 
     // Find the user by clerkUserId
     const user = await User.findOne({ clerkUserId: userId });
-
+    console.log("user", user);
     const events = await Event.find({
-      $or: [
-        { members: user },
-        { admin: user },
-        { "requirements.paidBy": user },
-      ],
+      "members": {
+        $elemMatch: {
+          "user": user._id
+        }
+      }
     }).populate("members admin");
     res.status(200).send(events);
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });

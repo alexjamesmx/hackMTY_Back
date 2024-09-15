@@ -2,7 +2,8 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("/pagar", async (req, res) => {
+router.post("/pay/product", async (req, res) => {
+  const { id, firstName, lastName, email } = req.body;
   res.send("Payment logic not implemented yet");
 });
 
