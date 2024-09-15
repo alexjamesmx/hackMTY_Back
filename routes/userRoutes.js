@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Missing id" });
   }
 
-  const existingUser = await User.findOne({ id });
+  const existingUser = await User.findOne({ clerkUserId: id });
   if (existingUser) {
     // User already exists
     return res.status(200).json(existingUser);

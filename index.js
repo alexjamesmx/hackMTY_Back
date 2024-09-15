@@ -4,12 +4,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRouter from "./routes/userRoutes.js";
 import eventRouter from "./routes/eventsRoutes.js";
-import productRouter from "./routes/productRoutes.js";
-import companyRouter from "./routes/companyRoutes.js";
-
-// import transactionRoutes from "./routes/transactionRoutes.js";
-import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
-import { generateDummyData } from "./dump.js";
+// import productRouter from "./routes/productRoutes.js";
+// import companyRouter from "./routes/companyRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -32,13 +28,15 @@ mongoose
   })
   .then(async () => {
     console.log("Connected to MongoDB");
-    
-    try {
-      const { companies, products } = await generateDummyData(10, 50);
-      console.log(`Dummy data generated: ${companies.length} companies and ${products.length} products`);
-    } catch (error) {
-      console.error("Error generating dummy data:", error);
-    }
+
+    // try {
+    //   // const { companies, products } = await generateDummyData(10, 50);
+    //   console.log(
+    //     `Dummy data generated: ${companies.length} companies and ${products.length} products`
+    //   );
+    // } catch (error) {
+    //   console.error("Error generating dummy data:", error);
+    // }
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB", err);
@@ -51,7 +49,9 @@ app.get("/", (req, res) => {
 
 app.delete("/", async (req, res) => {
   try {
-    const collections = await mongoose.connection.db.listCollections().toArray();
+    const collections = await mongoose.connection.db
+      .listCollections()
+      .toArray();
     for (const collection of collections) {
       await mongoose.connection.db.collection(collection.name).deleteMany({});
     }
@@ -64,8 +64,8 @@ app.delete("/", async (req, res) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
-app.use("/api/products", productRouter);
-app.use("/api/companies", companyRouter);
+// app.use("/api/products", productRouter);
+// app.use("/api/companies", companyRouter);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
