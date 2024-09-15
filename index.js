@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRouter from "./routes/userRoutes.js";
-import publicacionRoutes from "./routes/publicacionRoutes.js";
+import eventRouter from "./routes/eventsRoutes.js";
 // import transactionRoutes from "./routes/transactionRoutes.js";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
 
@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
-app.use("/api/posts", publicacionRoutes);
+app.use("/api/event", eventRouter);
 
 // Iniciar el servidor
 app.listen(PORT, () => {

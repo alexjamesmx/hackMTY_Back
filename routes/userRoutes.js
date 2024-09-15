@@ -1,12 +1,12 @@
 import express from "express";
-import { Usuario } from "../models/models.js";
+import { User } from "../models/models.js";
 
 const router = express.Router();
 
 // GET ALL USERS
 router.get("/", async (req, res) => {
   try {
-    const users = await Usuario.find();
+    const users = await User.find();
     return res.json(users);
   } catch (err) {
     console.log("Error getting users:", err);
@@ -21,13 +21,13 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Missing id" });
   }
 
-  const existingUser = await Usuario.findOne({ id });
+  const existingUser = await User.findOne({ id });
   if (existingUser) {
     // User already exists
     return res.status(200).json(existingUser);
   }
 
-  const user = new Usuario({
+  const user = new User({
     clerkUserId: req.body.id,
   });
 
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
 // GET USER BY ID
 router.get("/:userId", async (req, res) => {
   try {
-    const user = await Usuario.findById(req.params.userId);
+    const user = await User.findById(req.params.userId);
     return res.status(200).json(user);
   } catch (err) {
     console.log("Error getting user by ID:", err);
@@ -57,7 +57,7 @@ router.put("/:userId", async (req, res) => {
   const { userId } = req.params;
   const { displayName } = req.body;
   try {
-    const user = await Usuario.findById(userId);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

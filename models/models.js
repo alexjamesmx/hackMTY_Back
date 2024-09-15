@@ -2,46 +2,46 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 // Definir el esquema de Usuario
-const usuarioSchema = new Schema({
+const userSchema = new Schema({
   clerkUserId: {
     type: String,
     required: true,
     unique: true,
   },
-  publicaciones: [{ type: Schema.Types.ObjectId, ref: "Evento" }],
+  publicaciones: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   balance: { type: Number, required: true, default: 0 },
 });
 
-const empresaSchema = new Schema({
+const companySchema = new Schema({
   name: {type: String},
   categories: [String],
-  products: [productoSchema]
+  products: [productSchema]
 })
 
-const productoSchema = new Schema({
+const productSchema = new Schema({
   name: {type: String, required: true},
   price: { type: Number, required: true }
 });
 
 const requirementSchema = new Schema({
-  producto: { type: Schema.Types.ObjectId, ref: "Producto" },
-  unidades: {type: Number, default: 1},
-  pagado: { type: Boolean, default: false },
-  pagadoPor: { type: Schema.Types.ObjectId, ref: "Usuario" }
+  product: { type: Schema.Types.ObjectId, ref: "Product" },
+  units: {type: Number, default: 1},
+  paid: { type: Boolean, default: false },
+  paidBy: { type: Schema.Types.ObjectId, ref: "User" }
 })
 
 // Definir el esquema de Evento
-const eventoSchema = new Schema({
-  nombre: { type: String, required: true },
-  fecha_inicio: { type: Date, required: true },
-  fecha_fin: { type: Date, required: true },
-  requerimientos: [requirementSchema],
-  pagoEquitativo: {type: Boolean, required: true}
+const eventSchema = new Schema({
+  name: { type: String, required: true },
+  start_date: { type: Date, required: true },
+  end_date: { type: Date, required: true },
+  requirements: [requirementSchema],
+  equitative: {type: Boolean, required: true}
 });
 
 // Crear modelos
-export const Usuario = mongoose.model("Usuario", usuarioSchema);
-export const Empresa = mongoose.model("Empresa", empresaSchema);
-export const Producto = mongoose.model("Producto", productoSchema);
-export const Requerimiento = mongoose.model("Requerimiento", productoSchema);
-export const Evento = mongoose.model("Evento", eventoSchema);
+export const User = mongoose.model("User", userSchema);
+export const Company = mongoose.model("Company", companySchema);
+export const Product = mongoose.model("Product", productSchema);
+export const Requirement = mongoose.model("Requirement", requirementSchema);
+export const Event = mongoose.model("Event", eventSchema);
