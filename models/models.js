@@ -7,6 +7,7 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  name: { type: String, required: true},
   publicaciones: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   balance: { type: Number, required: true, default: 0 },
 });
