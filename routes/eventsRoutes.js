@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import { Event, User } from "../models/models.js";
 const router = express.Router();
 
@@ -10,12 +11,10 @@ router.put("/:eventId/payment/user/:userId", async (req, res) => {
     const event = await Event.findById(eventId);
     if (!event.equitative) {
       event.products.forEach(product => {
-        const id = new mongoose.Types.ObjectId(product._id);
-        for (let i = 0; i < products.length; i++){
-          if (id == products[i]._id){
-            event.products[i].paid = true;
-            event.products[i].paidBy = user._id;;
-          }
+        const id = product._id.toString();
+        if (products.includes(id)) {
+          product.paid = true;
+          product.paidBy = user._id;
         }
       });
     }
