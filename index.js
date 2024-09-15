@@ -17,6 +17,8 @@ app.use(
   })
 );
 
+app.use(express.json());
+
 // Conexión a MongoDB
 console.log("Connecting to MongoDB.." + process.env.MONGODB_URI);
 mongoose
@@ -36,25 +38,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.use(
-  "/api/users",
-  ClerkExpressWithAuth({}),
-  userRouter // Mueve `userRouter` después de `ClerkExpressWithAuth` si quieres proteger las rutas con autenticación
-);
-
-app.use("/api//publicaciones", ClerkExpressWithAuth({}), publicacionRoutes);
-// app.use(
-//   "/transacciones",
-//   ClerkExpressWithAuth({}),
-
-//   transactionRoutes
-// );
-
-// Manejo de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(401).send("Unauthenticated!");
-});
+app.use("/api/users", userRouter);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
