@@ -8,8 +8,11 @@ const usuarioSchema = new Schema({
     required: true,
     unique: true,
   },
-  publicaciones: [{ type: Schema.Types.ObjectId, ref: "Publicacion" }],
-  balance: { type: Number, required: true },
+  publicaciones: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Publicacion" }],
+    default: [], // Default value for publicaciones
+  },
+  balance: { type: Number, required: true, default: 0 },
 });
 
 // Definir el esquema de Publicacion

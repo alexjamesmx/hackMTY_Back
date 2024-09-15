@@ -52,17 +52,6 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-// GET USER BY ID
-router.get("exists/:userId", async (req, res) => {
-  try {
-    const user = await Usuario.findById(req.params.userId);
-    return res.status(200).json(user ? true : false);
-  } catch (err) {
-    console.log("Error getting user by ID:", err);
-    return res.status(404).json({ message: err });
-  }
-});
-
 // UPDATE USERNAME
 router.put("/:userId", async (req, res) => {
   const { userId } = req.params;
