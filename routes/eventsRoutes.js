@@ -71,7 +71,8 @@ router.get("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const events = await Event.find();
+    const events = await Event.find().populate("admin").populate("members.user");
+
     res.status(200).send(events);
   } catch (error) {
     res.status(500).send(error);
