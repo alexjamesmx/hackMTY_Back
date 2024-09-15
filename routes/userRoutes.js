@@ -28,10 +28,14 @@ router.post("/", async (req, res) => {
     return res.status(200).json(existingUser);
   }
 
-  let name = email
-  if (firstName && lastName){
-    name = firstName + " " + lastName
+  let name = email;
+  if (firstName){
+    name = firstName
+    if (lastName){
+      name += " " + lastName;
+    }
   }
+
 
   const user = new User({
     clerkUserId: req.body.id,

@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRouter from "./routes/userRoutes.js";
 import eventRouter from "./routes/eventsRoutes.js";
+import transactionRouter from "./routes/transactionRoutes.js";
+
 // import productRouter from "./routes/productRoutes.js";
 // import companyRouter from "./routes/companyRoutes.js";
 
@@ -64,6 +66,8 @@ app.delete("/", async (req, res) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
+app.use("/api/transactions", transactionRouter);
+
 // app.use("/api/products", productRouter);
 // app.use("/api/companies", companyRouter);
 

@@ -7,6 +7,7 @@ router.put("/:eventId/payment/user/:userId", async (req, res) => {
     const { eventId, userId } = req.params;
     const { products, amount } = req.body;
     const user = await User.findOne({ clerkUserId: userId});
+    user.balance = Number(user.balance) - Number(amount);
     const event = await Event.findById(eventId);
     if (!event.equitative) {
       event.products.forEach(product => {
@@ -22,6 +23,7 @@ router.put("/:eventId/payment/user/:userId", async (req, res) => {
         member.paid = Number(member.paid) + Number(amount);
       }
     });
+    await user.save();
     await event.save();
     res.status(201).send(event);
 

@@ -1,18 +1,25 @@
 import express from "express";
-
+import { User } from "../models/models.js";
 const router = express.Router();
 
-router.post("/pay/product", async (req, res) => {
-  const { id, firstName, lastName, email } = req.body;
-  res.send("Payment logic not implemented yet");
+router.post("/loan/", async (req, res) => {
+  const { idUser, amount_requested } = req.body;
+
+  try {
+    const user = await User.findOne({ clerkUserId: idUser });
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    user.balance += amount_requested;
+    await user.save();
+
+    res.status(201).send(user);
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(400).send(error);
+  }
 });
 
-router.post("/depositar", async (req, res) => {
-  res.send("Deposit logic not implemented yet");
-});
-
-router.post("/retirar", async (req, res) => {
-  res.send("Withdrawal logic not implemented yet");
-});
-
-module.exports = router;
+export default router;
